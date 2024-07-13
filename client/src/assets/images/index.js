@@ -1,0 +1,1 @@
+export {default as carlogo} from './car-logo.png'
