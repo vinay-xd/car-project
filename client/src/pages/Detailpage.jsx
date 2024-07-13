@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { GoLocation } from "react-icons/go";
+import { IoMdCheckbox } from "react-icons/io";
+import { FiPhone, FiMail } from "react-icons/fi";
 import { useCarData } from '../context/carContext';
+import * as Images from '../assets/images/index.js' 
 
 function Detailpage() {
     const { carList } = useCarData()
@@ -13,6 +16,31 @@ function Detailpage() {
     const ref = useRef(null)
 
     const singlecar = carList.find(item => item._id === id)
+
+    // const featuresarray = singlecar.features.split(',')
+    // console.log(singlecar.features);
+    
+    
+    const handelthumbnail = (index) => {
+        setthumbnail(index)
+    }
+
+    useEffect(()=> {
+        if (ref.current) {
+            setShowReadBtn(ref.current.scrollHeight !== ref.current.clientHeight)
+        }
+    }, [singlecar])
+
+    const paraStyle = {
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        WebkitLineClamp: 5,
+        overflow: 'hidden',
+        background: 'linear-gradient(180deg, #d7d7d7, #d7d7d720)', 
+        webkitBackgroundClip: 'text',
+        webkitTextFillColor: 'transparent'
+    }
+
     if (!singlecar) {
         return (
             <>
@@ -25,26 +53,8 @@ function Detailpage() {
             </>
         )
     }
-
-    const handelthumbnail = (index) => {
-        setthumbnail(index)
-    }
-
-    const paraStyle = {
-        display: '-webkit-box',
-        WebkitBoxOrient: 'vertical',
-        WebkitLineClamp: 3,
-        overflow: 'hidden',
-    }
+    const featuresArray = singlecar.features ? singlecar.features.split(',').map(feature => feature.trim()) : [];
     
-    useEffect(() => {
-        if(ref.current) {
-            console.log(ref.current.scrollHeight, ref.current.clientHeight);
-            // setShowReadBtn(ref.current.scrollHeight !== ref.current.clientHeight)
-        }
-    }, [])
-
-
     return (
         <>
             <section>
@@ -75,33 +85,50 @@ function Detailpage() {
                     </div>
                 </div>
 
-                <div className='subSection flex justify-between mt-[72px] w-[1280px] mx-auto my-[100px]'>
+                <div className='subSection flex justify-between mt-[72px] w-[1210px] mx-auto my-[100px] '>
                     <div className='leftCon w-[664px]'>
-                        <div>
-                            <h3>Description</h3>
+                        
+                        <div className='decCon text-[18px]'>
+                            <h3 className='font-[700] mb-4'>Description</h3>
                             <p style={isOpen ? null : paraStyle} ref={ref}>
-                                orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                                Why do we use it?
-                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-
-                                Where does it come from?
-                                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-                                The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-
-                                Where can I get some?
-                                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                                {singlecar.description}
                             </p>
                             {
                                 showReadBtn && (
-                                    <button onClick={() => setisOpen(!isOpen)}>
+                                    <button className=' text-[#007cc7]' onClick={() => setisOpen(!isOpen)}>
                                         {isOpen ? 'read less' : 'read more'}
                                     </button>
                                 )
                             }
                         </div>
+
+                        <div className='featureCon text-[18px] mt-10'>
+                            <h3 className='font-[700] mb-6'>Features</h3>
+                            <div className=' flex flex-wrap'>
+                                {featuresArray.map(i => (
+                                <p className='bg-[#12232e] py-4 m-1 px-4' ><span className='inline-block text-[22px] align-text-bottom mr-2'><IoMdCheckbox /></span> {i}</p>
+                            ))}
+                            </div>
+                        </div>
+
+                        <div className='dealerInfo text-[18px] mt-16'>
+                            <h3 className='font-[700]'>Dealer Info</h3>
+                            <div className='mt-6 w-[100%] h-[90px] flex items-center  bg-[#071620] px-5'>
+                                <div className=' flex justify-between w-1/3 my-auto border-r-2'>
+                                    <img className='w-[60px] h-[60px] object-cover rounded-[100%] mr-4' src={Images.myImg} alt="" />
+                                    <p>Vinay Panwar Dealer</p>
+                                </div>
+                                <div className='flex justify-evenly w-1/3 border-r-2 h-[60px] items-center ' >
+                                    <span className='text-[35px]'><FiPhone /></span>
+                                    <p>000-000-0000</p>
+                                </div>
+                                <div className='flex justify-evenly w-1/3 h-[60px] items-center ' >
+                                    <span className='text-[35px] mr-2'><FiMail /></span>
+                                    <p>sendmail@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
 
                     <div className='rightCon w-[400px]'>
