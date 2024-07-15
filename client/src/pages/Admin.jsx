@@ -14,6 +14,8 @@ function Admin() {
   const { carList, setediting, editingfunction, fetchCarData } = useCarData()
   const {token} = useData()
   const [show, setshow] = useState()
+  const navigate = useNavigate()
+
 
   const showdelete = (item) => {
     setshow(item)
@@ -37,13 +39,13 @@ function Admin() {
 
 
   
-  const navigate = useNavigate()
+  
   return (
     <>
       <section>
         <div className='main w-[1146px] mx-auto my-[80px]'>
           <div className='upperCon flex justify-between '>
-            <p className='text-[30px] font-[700]'>12 result</p>
+            <p className='text-[30px] font-[700]'>{carList.length} Results</p>
             <div className='flex justify-evenly w-[400px]'>
               <select className='bg-[#152836] text-[14px] font-[600] px-4 py-2 w-[236px] rounded' name="sort_by" id="sort_by">
                 <option value="" defaultChecked> sort by </option>
@@ -57,7 +59,7 @@ function Admin() {
           </div>
 
           <div className='content relative'>
-            <div className='flex justify-between my-[80px]'>
+            <div className='flex justify-between flex-wrap my-[80px]'>
               {
                 carList.map(i => (
                   <Admincard

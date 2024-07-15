@@ -15,7 +15,7 @@ function Admincard({title, price, year, drivetrain, image, deletecar, edit, id})
         <div className='decCon mt-4'>
             <Link to={`/cardetails/${id}`}><h3 className='text-[20px] font-[600]'>{title}</h3></Link>
             <p className='text-[24px] font-[700] text-[#007cc7] mb-3'>${price}</p>
-            <p className='font-[600] mb-3'>location</p>
+            <p className='font-[600] mb-3'>Jodhpur, Rajasthan</p>
             <div className='pdtDet grid grid-cols-2'>
                     <div><span className='inline-block mr-1 text-[20px] align-middle text-[#007cc7]'><IoCalendarOutline /></span>{year}</div>
                     <div><span className='inline-block mr-1 text-[20px] align-middle text-[#007cc7]'><TbSteeringWheel /></span>{drivetrain}</div>

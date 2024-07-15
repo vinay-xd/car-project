@@ -143,4 +143,24 @@ const userReset = async (req, res) => {
     }
 }
 
-export { userSignup, userLogin, userConfirm, userForgot, userReset }
+const userContact = async (req, res) => {
+    const {name, email, phone, subject, message, carname} = req.body;
+    try {
+        const data = {
+            query: {
+                name, email, phone, subject, message, carname
+            }
+        }
+        const existUser = await User.findByIdAndUpdate(req.decoded.userId, data, {new: true})
+        await existUser.save()
+        res.status(200).json({message: 'dealer will contact you soon'})
+        // const existUser = await User.findById(req.decoded.userId)
+        // if(!existUser) {return res.status(400).json({message: 'user not found'})}
+
+        // existUser.query
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export { userSignup, userLogin, userConfirm, userForgot, userReset, userContact }

@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import { useAuth } from '../middleware/Auth.middleware.js'
 import { upload } from '../middleware/file.middleware.js'
-import { userSignup, userLogin, userConfirm, userForgot, userReset } from '../controller/user.controller.js'
+import { userSignup, userLogin, userConfirm, userForgot, userReset, userContact } from '../controller/user.controller.js'
 import { addCar, getCar, deletCar, updateCar } from '../controller/car.controller.js'
 
 
@@ -13,6 +13,7 @@ router.get('/confirmation/:token', userConfirm)
 router.post('/user-login', userLogin)
 router.post('/user-forgot', userForgot )
 router.post('/reset-password/:token', userReset)
+router.post('/contact-dealer', useAuth, userContact)
 
 //......................................cardata
 router.post('/upload-cardata', upload, useAuth, addCar)

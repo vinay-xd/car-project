@@ -6,7 +6,8 @@ const carContext = createContext()
 export function Carprovider({ children }) {
     const [carList, setcarList] = useState([])
     const [editing, setediting] = useState(null)
-    
+    const [search, setsearch] = useState(null)
+    const [userSearch, setuserSearch] = useState(null)
     const [carData, setcarData] = useState({
         title: '',
         description: '',
@@ -19,7 +20,7 @@ export function Carprovider({ children }) {
         body_type: '',
         seats: '',
         color: '',
-        fule_type: '',
+        fuel_type: '',
         mileage: '',
         transmission: '',
         drivetrain: '',
@@ -58,7 +59,7 @@ export function Carprovider({ children }) {
             body_type: item.body_type,
             seats: item.seats,
             color: item.color,
-            fule_type: item.fule_type,
+            fuel_type: item.fuel_type,
             mileage: item.mileage,
             transmission: item.transmission,
             drivetrain: item.drivetrain,
@@ -74,6 +75,18 @@ export function Carprovider({ children }) {
     })
     }
 
+    const searchCarData = search ? (carList.filter(carData => 
+        carData.title.toLowerCase().includes(search.toLowerCase()) || 
+        carData.description.toLowerCase().includes(search.toLowerCase())))
+        : []
+    
+    const userSearchCarData = userSearch ? ( carList.filter(carData => 
+        carData.title.toLowerCase().includes(userSearch.toLowerCase()) ||
+        carData.description.toLowerCase().includes(userSearch.toLowerCase())
+    ))  : []
+
+    console.log(userSearchCarData);
+
 
     useEffect(() => {
         fetchCarData()
@@ -81,7 +94,7 @@ export function Carprovider({ children }) {
 
     return (
         <>
-            <carContext.Provider value={{carList, setcarList, editing, setediting, fetchCarData, editingfunction, carData, setcarData}}>
+            <carContext.Provider value={{carList, search, setsearch, userSearch, setuserSearch, searchCarData, userSearchCarData, setcarList, editing, setediting, fetchCarData, editingfunction, carData, setcarData}}>
                 {children}
             </carContext.Provider>
         </>

@@ -32,7 +32,28 @@ const userSchema = new mongoose.Schema(
                     type: mongoose.Types.ObjectId,
                     ref: 'car'
                 }
-        ]
+        ],
+        query: {
+            name: {
+                type: String,
+                require: true
+            },
+            email: {
+                type: String,
+                require: true
+            },
+            phone: {
+                type: Number
+            },
+            subject: {
+                type: String,
+                require: true
+            },
+            message: {
+                type: String,
+                require: true
+            }
+        }
 
     }, {timestamps: true})
 

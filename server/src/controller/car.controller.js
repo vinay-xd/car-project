@@ -4,7 +4,7 @@ import { User } from "../model/user.model.js";
 import { cloudfiles } from "../utils/cloudinary.js"; 
 
 const addCar = async (req, res) => {
-    const {title, description ,price, features, brand, model, condition, year, body_type, seats, color, fule_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume} = req.body
+    const {title, description ,price, features, brand, model, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume} = req.body
     try {
         const existUser = await User.findById(req.decoded.userId)
         if (!existUser) { return res.status(400).json({ message: 'user not found' }) }
@@ -15,7 +15,7 @@ const addCar = async (req, res) => {
 
             if(result.some(url => url === null)) {return res.status(500).json({message: 'some file failed to upload', result})}
 
-            const car = new Car ({ title, description ,price, features, brand, model, condition, year, body_type, seats, color, fule_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume, images: result })
+            const car = new Car ({ title, description ,price, features, brand, model, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume, images: result })
 
             console.log('car..................', car);
             
@@ -54,7 +54,7 @@ const deletCar = async (req, res) => {
 }
 
 const updateCar = async (req, res) => {
-    const {title, description ,price, features, brand, model, condition, year, body_type, seats, color, fule_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume} = req.body
+    const {title, description ,price, features, brand, model, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume} = req.body
     try {
         const existUser = await User.findById(req.decoded.userId)
         if (existUser.role === 'admin') {
@@ -63,12 +63,13 @@ const updateCar = async (req, res) => {
 
             if(result.some(url => url === null)) {return res.status(500).json({message: 'some file failed to upload', result})}
 
-            const data = { title, description ,price, features, brand, model, condition, year, body_type, seats, color, fule_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume }
+            const data = { title, description ,price, features, brand, model, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume }
             if (req.files) {
                 data.images = result
             }
             await Car.findByIdAndUpdate(req.params.id, data, { new: true });
             res.status(200).json({ message: 'Car data updated' })
+            // console.log('data...............', data);
         } else {
             res.status(400).json({ message: 'user is not admin' })
         }

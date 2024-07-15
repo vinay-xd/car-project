@@ -12,6 +12,7 @@ import Resetpass from './component/User/Resetpass'
 import AddCarData from './component/AddCarData'
 import ProtectedRoute from './component/ProtectedRoute'
 import Detailpage from './pages/Detailpage'
+import Carlist from './pages/Carlist'
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
           <Route path='/reset-password/:token' element={<Resetpass/>}/>
           <Route path='/admin/add/cars' element={<ProtectedRoute Role = 'admin'><AddCarData/></ProtectedRoute>}/>
           <Route path='/cardetails/:id' element={<Detailpage/>}/>
+          <Route path='/carlist' element={<Carlist/>}/>
         </Routes>
       </Router>
     </>

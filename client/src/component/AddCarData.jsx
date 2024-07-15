@@ -33,7 +33,7 @@ function AddCarData() {
     formData.append('body_type', carData.body_type)
     formData.append('seats', carData.seats)
     formData.append('color', carData.color)
-    formData.append('fule_type', carData.fule_type)
+    formData.append('fuel_type', carData.fuel_type)
     formData.append('mileage', carData.mileage)
     formData.append('transmission', carData.transmission)
     formData.append('drivetrain', carData.drivetrain)
@@ -129,7 +129,7 @@ function AddCarData() {
                             <div>
                                 <label className='font-[500] block mb-2' htmlFor="body_type">Body type</label>
                                 <select className='bg-[#152836] w-[300px] rounded px-4 py-3 text-[15px] font-[600]' name="body_type" id="body_type" value={carData.body_type} onChange={handleChange}>
-                                    <option value="Sedan">Sedan</option>
+                                    <option value="Sedan" >Sedan</option>
                                     <option value="Hatch-Back">Hatch-Back</option>
                                     <option value="Micro-SUV">Micro-SUV</option>
                                     <option value="SUV">SUV</option>
@@ -173,8 +173,8 @@ function AddCarData() {
 
                         <div className='flex justify-between w-full mb-7'>
                             <div>
-                                <label className='font-[500] block mb-2' htmlFor="fule">Fuel Type</label>
-                                <input className=' bg-[#152836] w-[300px] rounded px-4 py-3 text-[15px] font-[600]' type="text" name="fule_type" id="fule" placeholder='Add Fule Type' value={carData.fule_type} onChange={handleChange} />
+                                <label className='font-[500] block mb-2' htmlFor="fuel">Fuel Type</label>
+                                <input className=' bg-[#152836] w-[300px] rounded px-4 py-3 text-[15px] font-[600]' type="text" name="fuel_type" id="fuel" placeholder='Add Fuel Type' value={carData.fuel_type} onChange={handleChange} />
                             </div>
                             <div>
                                 <label className='font-[500] block mb-2' htmlFor="mileage">Mileage</label>
