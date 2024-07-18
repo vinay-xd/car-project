@@ -6,8 +6,9 @@ const carContext = createContext()
 export function Carprovider({ children }) {
     const [carList, setcarList] = useState([])
     const [editing, setediting] = useState(null)
-    const [search, setsearch] = useState(null)
-    const [userSearch, setuserSearch] = useState(null)
+    const [search, setsearch] = useState('')
+    const [userSearch, setuserSearch] = useState('')
+    const [files, setfiles] = useState([])
     const [carData, setcarData] = useState({
         title: '',
         description: '',
@@ -72,20 +73,27 @@ export function Carprovider({ children }) {
             width: item.width,
             height: item.height,
             cargo_volume: item.cargo_volume
-    })
+        })
     }
+    // console.log('files....', files);
 
-    const searchCarData = search ? (carList.filter(carData => 
-        carData.title.toLowerCase().includes(search.toLowerCase()) || 
-        carData.description.toLowerCase().includes(search.toLowerCase())))
+    const searchCarData = search ? (
+        carList.filter(carData =>
+            carData.title.toLowerCase().includes(search.toLowerCase()) ||
+            carData.description.toLowerCase().includes(search.toLowerCase()) ||
+            carData.price.parseInt().includes(search.parseInt())
+
+        ))
         : []
     
-    const userSearchCarData = userSearch ? ( carList.filter(carData => 
-        carData.title.toLowerCase().includes(userSearch.toLowerCase()) ||
-        carData.description.toLowerCase().includes(userSearch.toLowerCase())
-    ))  : []
 
-    console.log(userSearchCarData);
+    const userSearchCarData = userSearch ? (carList.filter(carData =>
+        carData.title.toLowerCase().includes(userSearch.toLowerCase()) ||
+        carData.description.toLowerCase().includes(userSearch.toLowerCase()) ||
+        carData.price.includes(userSearch)
+    )) : []
+
+    // console.log(userSearchCarData);
 
 
     useEffect(() => {
@@ -94,7 +102,7 @@ export function Carprovider({ children }) {
 
     return (
         <>
-            <carContext.Provider value={{carList, search, setsearch, userSearch, setuserSearch, searchCarData, userSearchCarData, setcarList, editing, setediting, fetchCarData, editingfunction, carData, setcarData}}>
+            <carContext.Provider value={{ carList, search, setsearch, userSearch, setuserSearch, searchCarData, userSearchCarData, setcarList, editing, setediting, fetchCarData, editingfunction, carData, setcarData, files, setfiles }}>
                 {children}
             </carContext.Provider>
         </>

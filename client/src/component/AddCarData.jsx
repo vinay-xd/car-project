@@ -9,10 +9,8 @@ import axios from 'axios';
 
 function AddCarData() {
     const {token} = useData()
-    const {editing, setediting, fetchCarData, carData, setcarData,} = useCarData()
-    const [files, setfiles] = useState([])
+    const {editing, setediting, fetchCarData, carData, setcarData, files, setfiles} = useCarData()
     
-
     const navigate = useNavigate()
 
     const handleChange = (e) => {
@@ -21,7 +19,7 @@ function AddCarData() {
 
     const formData = new FormData()
     // formData.append('file', file)
-    files.map(file => { formData.append('file', file) })
+    {files ? files.map(file => { formData.append('file', file) }) : []}
     formData.append('title', carData.title)
     formData.append('description', carData.description)
     formData.append('price', carData.price)
@@ -66,8 +64,8 @@ function AddCarData() {
                     }
                 })
                 console.log(response);
-                setfiles(null)
                 navigate('/admin')
+                setfiles([])
                 fetchCarData()
             } catch (error) {
                 console.log('error in uploading', error);
@@ -260,7 +258,7 @@ function AddCarData() {
 
 
                                 <div className="flex flex-wrap mt-4 w-[60%] justify-between">
-                                    {files.map((file, index) => (
+                                    {files && files.map((file, index) => (
                                         <div key={index} className="m-2">
                                             {file.type.startsWith('image/') ? (
                                                 <img
