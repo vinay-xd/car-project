@@ -1,6 +1,6 @@
 import React from 'react'
 import { useData } from '../context/userContex'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 function ProtectedRoute({children, Role}) {
 const {token, role} = useData()
