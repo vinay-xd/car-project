@@ -15,9 +15,9 @@ function Carlist() {
     const { userSearch, setuserSearch, carList, userSearchCarData } = useCarData()
     const [clicked, setClicked] = useState({})
     const [checked, setChecked] = useState({})
-    const [price, setPrice] = useState([20, 80000])
+    const [pricerange, setPricerange] = useState([20, 80000])
     const [filters, setFilter] = useState({
-        price: [],
+        price: { minPrice: 0, maxPrice: Number.POSITIVE_INFINITY },
         brand: [],
         year: [],
         body_type: [],
@@ -30,10 +30,18 @@ function Carlist() {
     const [filterdata, setfilterData] = useState([...carList])
     const [sortOrder, setSortOrder] = useState({ key: '', order: '' })
 
-    // .........................................price slider
+
+
+    // .........................................price slider with filter
     const onSliderChange = (value) => {
-        setPrice(value)
+        setPricerange(value)
+        setFilter(prevValue =>
+                    checked.price ? { ...prevValue, 'price': { 'minPrice': value[0], 'maxPrice': value[1] } } : 
+                    { ...prevValue, 'price': { 'minPrice': 0, 'maxPrice': Number.POSITIVE_INFINITY }}
+                );
+    // onSliderChange function pass value to setfilter when it checked and on slide it work dynamicaly 
     }
+    
 
     //............................................checkbox
     const isClicked = (id) => {
@@ -41,7 +49,10 @@ function Carlist() {
             ...prevState,
             [id]: !prevState[id]
         }));
+        //customize function for checking an checbox is checked or not for custom checkbox
     }
+
+
     const ischecked = (e) => {
         const { id, name, value, checked } = e.target;
         const valuetoSet = ['year', 'seats'].includes(name) ? parseInt(value) : value.toLowerCase();
@@ -49,11 +60,18 @@ function Carlist() {
             ...prevState,
             [id]: !prevState[id]
         }));
-        setFilter(prevFilter =>
-            checked ? { ...prevFilter, [name]: [...prevFilter[name], valuetoSet] } :
-                { ...prevFilter, [name]: prevFilter[name].filter(item => item !== valuetoSet) },
-        )
+        setFilter(prevFilter => {
+            if (name === 'price') {
+                return checked ? { ...prevFilter, 'price': { 'minPrice': pricerange[0], 'maxPrice': pricerange[1] } } : 
+                { ...prevFilter, 'price': { 'minPrice': 0, 'maxPrice': Number.POSITIVE_INFINITY }}
+            }
+            else {
+                return checked ? { ...prevFilter, [name]: [...prevFilter[name], valuetoSet] } :
+                { ...prevFilter, [name]: prevFilter[name].filter(item => item !== valuetoSet) } 
+            }
+        })
     }
+
 
     // ...................................sort function value
     const handleSortChange = (e) => {
@@ -71,14 +89,15 @@ function Carlist() {
             if (key && order) {
                 return order === 'asc' ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
             }
-            return data            
+            return data
         });
     }
 
     //...................................filter function
-    
+
     const handlefilterdata = () => {
         const filtered = (carList.filter(item =>
+            // use filters.year.length === 0 because if filters.year is empty or not selected, then first condition become true, if not use categories statement become false and exist whole funtion without checking other selected values
             (filters.year.length === 0 || filters.year.includes(parseInt(item.year))) &&
             (filters.brand.length === 0 || filters.brand.includes(item.brand.toLowerCase())) &&
             (filters.body_type.length === 0 || filters.body_type.includes(item.body_type.toLowerCase())) &&
@@ -86,16 +105,17 @@ function Carlist() {
             (filters.color.length === 0 || filters.color.includes(item.color.toLowerCase())) &&
             (filters.drivetrain.length === 0 || filters.drivetrain.includes(item.drivetrain.toLowerCase())) &&
             (filters.seats.length === 0 || filters.seats.includes(parseInt(item.seats))) &&
-            (filters.transmission.length === 0 || filters.transmission.includes(item.transmission.toLowerCase()))
+            (filters.transmission.length === 0 || filters.transmission.includes(item.transmission.toLowerCase())) &&
+            (filters.price.minPrice <= item.price && filters.price.maxPrice >= item.price )
         ))
 
         const array = sortData(filtered, sortOrder.key, sortOrder.order)
         setfilterData(array)
     }
-    
+
     useEffect(() => {
         handlefilterdata()
-    }, [filters, carList, sortOrder])
+    }, [filters, carList, sortOrder, pricerange])
 
     // console.log(filterdata);
     // // console.log(filters);
@@ -160,10 +180,6 @@ function Carlist() {
                             <button onClick={() => isClicked('search')} >Year</button>
                             {clicked.search &&
                                 <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
-                                    {/* <div><div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' id='yearone' onClick={() => ischecked('yearone')} style={checked.yearone ? checkstyle : null}></div> <label htmlFor="yearone">2016</label></div>
-                                    <div><div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' id='2017' onClick={() => ischecked('yeartwo')} style={checked.yeartwo ? checkstyle : null}></div> <label htmlFor="2017">2017</label></div>
-                                    <div><div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' id='2018' onClick={() => ischecked('yearthree')} style={checked.yearthree ? checkstyle : null}></div> <label htmlFor="2018">2016</label></div>
-                                    <div><div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' id='2019' onClick={() => ischecked('yearfour')} style={checked.yearfour ? checkstyle : null}></div> <label htmlFor="2019">2019</label></div> */}
                                     <div>
                                         <input type="checkbox" className='hidden' name="year" id='yearone' value={2020} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="yearone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.yearone ? checkstyle : null}></div> 2020</label>
@@ -350,7 +366,7 @@ function Carlist() {
 
                         <div className='priceRange py-5'>
                             <h3 className='font-[600]'>Price Range</h3>
-                            <p className='text-[18px] font-[700] text-[#007cc7]'>${price[0]} - ${price[1]}</p>
+                            <p className='text-[18px] font-[700] text-[#007cc7]'>${pricerange[0]} - ${pricerange[1]}</p>
                             <div className=' w-[359px] h-2 bg-[#152836] my-7'>
                                 <ReactSlider
                                     className="horizontal-slider pt-3 "
@@ -358,10 +374,14 @@ function Carlist() {
                                     trackClassName="track"
                                     min={0}
                                     max={100000}
-                                    value={price}
+                                    value={pricerange}
                                     onChange={onSliderChange}
                                     renderThumb={(props, state) => <div  {...props}>{state.valueNow}</div>}
                                 />
+                            </div>
+                            <div className='mt-10'>
+                                <input type="checkbox" className='hidden' name="price" id='price'  onChange={ischecked} />
+                                <label htmlFor="price"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.price ? checkstyle : null}></div> Price</label>
                             </div>
                         </div>
 
