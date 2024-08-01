@@ -3,6 +3,7 @@ import { useData } from '../context/userContex'
 import { useNavigate, Link } from 'react-router-dom'
 import { FcGoogle } from "react-icons/fc";
 import axios from 'axios'
+import toast from 'react-hot-toast';
 
 
 function Signup() {
@@ -25,6 +26,10 @@ function Signup() {
       const response = await axios.post('http://localhost:5000/user-signup', userdetails)
       // localdata(response.data.token, response.data.role)
       setmessage(response.data.message)
+      toast.success('signup successful check mail for confirmation', {
+        duration: 1000
+      })
+
     } catch (error) {
       console.log('error in signup', error);
     }
@@ -45,7 +50,7 @@ function Signup() {
             <input className='block w-[100%] bg-[#34495e] text-[#fff] placeholder:text-[#a9a9a9] py-2 px-3 mb-4 rounded' id='email' type="text" name="email" placeholder='enter your email' value={userdetails.email} onChange={handelChange} />
             
             <label htmlFor="password" >Password</label>
-            <input className='block w-[100%] bg-[#34495e] text-[#fff] placeholder:text-[#a9a9a9] py-2 px-3 mb-4 rounded' id='password' type="text" name="password" placeholder='enter your password' value=
+            <input className='block w-[100%] bg-[#34495e] text-[#fff] placeholder:text-[#a9a9a9] py-2 px-3 mb-4 rounded' id='password' type="password" name="password" placeholder='enter your password' value=
             {userdetails.password} onChange={handelChange} />
           </div>
           <div className=' flex justify-between'>

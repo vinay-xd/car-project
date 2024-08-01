@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 function Carcard({title, price, year, drivetrain, fule_type, image, id}) {
   return (
     <>
-    <div key={id} className='card text-[#fff] w-[362px] p-4 border-[2px] border-[#12232e] rounded bg-[#0b0c10]'>
+    <div key={id} className='card text-[#fff] w-[362px] p-4 border-[2px] border-[#12232e] rounded bg-[#0b0c10] my-4'>
         <div className='imgCon'>
             <img className='h-[190px] w-[330px] object-cover' src={image} alt="" />
         </div>

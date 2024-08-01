@@ -88,7 +88,7 @@ function Header() {
 
     return (
         <>
-            <nav className='navBar bg-[#31708e] text-[#fff]'>
+            <nav className='navBar bg-[#076e99] text-[#fff]'>
                 <div className='navContainer w-[1440px] mx-auto flex justify-between'>
                     <div className='brandLogo w-[150px]'>
                         <Link to={'/'}><img className='w-full object-contain h-full' src={Images.carlogo} alt="" /></Link>

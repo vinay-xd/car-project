@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
+import { string } from 'zod'
 
 const userSchema = new mongoose.Schema(
     {
@@ -33,7 +34,7 @@ const userSchema = new mongoose.Schema(
                     ref: 'car'
                 }
         ],
-        query: {
+        query: [{
             name: {
                 type: String,
                 require: true
@@ -45,6 +46,10 @@ const userSchema = new mongoose.Schema(
             phone: {
                 type: Number
             },
+            carname:{
+                type: String,
+                require: true,
+            },
             subject: {
                 type: String,
                 require: true
@@ -53,7 +58,7 @@ const userSchema = new mongoose.Schema(
                 type: String,
                 require: true
             }
-        }
+        }]
 
     }, {timestamps: true})
 

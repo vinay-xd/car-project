@@ -12,121 +12,8 @@ import Carcard from '../component/cards/carcard';
 
 
 function Carlist() {
-    const { userSearch, setuserSearch, carList, userSearchCarData } = useCarData()
-    const [clicked, setClicked] = useState({})
-    const [checked, setChecked] = useState({})
-    const [pricerange, setPricerange] = useState([20, 80000])
-    const [filters, setFilter] = useState({
-        price: { minPrice: 0, maxPrice: Number.POSITIVE_INFINITY },
-        brand: [],
-        year: [],
-        body_type: [],
-        seats: [],
-        color: [],
-        fuel_type: [],
-        transmission: [],
-        drivetrain: [],
-    })
-    const [filterdata, setfilterData] = useState([...carList])
-    const [sortOrder, setSortOrder] = useState({ key: '', order: '' })
-
-
-
-    // .........................................price slider with filter
-    const onSliderChange = (value) => {
-        setPricerange(value)
-        setFilter(prevValue =>
-                    checked.price ? { ...prevValue, 'price': { 'minPrice': value[0], 'maxPrice': value[1] } } : 
-                    { ...prevValue, 'price': { 'minPrice': 0, 'maxPrice': Number.POSITIVE_INFINITY }}
-                );
-    // onSliderChange function pass value to setfilter when it checked and on slide it work dynamicaly 
-    }
+    const { search, setsearch, searchCarData, onSliderChange, isClicked, ischecked, handleSortChange, sortData, clicked, pricerange, checked, filterdata, checkstyle } = useCarData()
     
-
-    //............................................checkbox
-    const isClicked = (id) => {
-        setClicked(prevState => ({
-            ...prevState,
-            [id]: !prevState[id]
-        }));
-        //customize function for checking an checbox is checked or not for custom checkbox
-    }
-
-
-    const ischecked = (e) => {
-        const { id, name, value, checked } = e.target;
-        const valuetoSet = ['year', 'seats'].includes(name) ? parseInt(value) : value.toLowerCase();
-        setChecked(prevState => ({
-            ...prevState,
-            [id]: !prevState[id]
-        }));
-        setFilter(prevFilter => {
-            if (name === 'price') {
-                return checked ? { ...prevFilter, 'price': { 'minPrice': pricerange[0], 'maxPrice': pricerange[1] } } : 
-                { ...prevFilter, 'price': { 'minPrice': 0, 'maxPrice': Number.POSITIVE_INFINITY }}
-            }
-            else {
-                return checked ? { ...prevFilter, [name]: [...prevFilter[name], valuetoSet] } :
-                { ...prevFilter, [name]: prevFilter[name].filter(item => item !== valuetoSet) } 
-            }
-        })
-    }
-
-
-    // ...................................sort function value
-    const handleSortChange = (e) => {
-        const value = e.target.value;
-        value === 'asc' || value === 'desc' ? setSortOrder({ key: 'title', order: value }) :
-            value === 'high' ? setSortOrder({ key: 'price', order: 'desc' }) : setSortOrder({ key: 'price', order: 'asc' });
-    }
-
-    const sortData = (data, key, order) => {
-        return data.sort((a, b) => {
-            // key === 'price' || order === 'asc' ? a[key] - b[key] : b[key] -a[key];
-            if (key === 'price') {
-                return order === 'asc' ? a[key] - b[key] : b[key] - a[key];
-            }
-            if (key && order) {
-                return order === 'asc' ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
-            }
-            return data
-        });
-    }
-
-    //...................................filter function
-
-    const handlefilterdata = () => {
-        const filtered = (carList.filter(item =>
-            // use filters.year.length === 0 because if filters.year is empty or not selected, then first condition become true, if not use categories statement become false and exist whole funtion without checking other selected values
-            (filters.year.length === 0 || filters.year.includes(parseInt(item.year))) &&
-            (filters.brand.length === 0 || filters.brand.includes(item.brand.toLowerCase())) &&
-            (filters.body_type.length === 0 || filters.body_type.includes(item.body_type.toLowerCase())) &&
-            (filters.fuel_type.length === 0 || filters.fuel_type.includes(item.fuel_type.toLowerCase())) &&
-            (filters.color.length === 0 || filters.color.includes(item.color.toLowerCase())) &&
-            (filters.drivetrain.length === 0 || filters.drivetrain.includes(item.drivetrain.toLowerCase())) &&
-            (filters.seats.length === 0 || filters.seats.includes(parseInt(item.seats))) &&
-            (filters.transmission.length === 0 || filters.transmission.includes(item.transmission.toLowerCase())) &&
-            (filters.price.minPrice <= item.price && filters.price.maxPrice >= item.price )
-        ))
-
-        const array = sortData(filtered, sortOrder.key, sortOrder.order)
-        setfilterData(array)
-    }
-
-    useEffect(() => {
-        handlefilterdata()
-    }, [filters, carList, sortOrder, pricerange])
-
-    // console.log(filterdata);
-    // // console.log(filters);
-    // // console.log('carList........', carList);
-    // console.log(sortOrder);
-
-    const checkstyle = {
-        backgroundColor: '#fff',
-        borderColor: '#007cc7'
-    }
-
 
     return (
         <>
@@ -144,20 +31,20 @@ function Carlist() {
                 </div>
 
                 <div className='main flex justify-between w-[1192px] mx-auto mt-10'>
-                    <div className='filter w-[391px] p-4 bg-[#071620]'>
+                    <div className='filter text-left w-[391px] p-4 bg-[#071620]'>
                         <div className='border-b-2 pb-3'>
                             <h3 className='text-[20px] font-[500] px-4'>Filter</h3>
                         </div>
 
                         <div className='search relative w-[359px] rounded mt-6 overflow-hidden '>
                             <span className=' absolute text-[25px] z-10 top-[50%] translate-y-[-50%] left-6 font-[600]'><FiSearch /></span>
-                            <input className='text-[18px] w-full bg-[#152836] px-[56px] py-3 text-[#a9a9a9]' type="text" name="search" value={userSearch} onChange={(e) => setuserSearch(e.target.value)} placeholder='Search' />
+                            <input className='text-[18px] w-full bg-[#152836] px-[56px] py-3 text-[#a9a9a9]' type="text" name="search" value={search} onChange={(e) => setsearch(e.target.value)} placeholder='Search' />
                         </div>
 
-                        {userSearchCarData ? (
+                        {searchCarData ? (
                             <div className='search-list  rounded overflow-hidden my-3'>
                                 {
-                                    userSearchCarData.map(i =>
+                                    searchCarData.map(i =>
                                         <div className='flex justify-between w-[350px] mx-auto mb-2 pt-2 px-3 bg-[#152836] '>
                                             <div className='w-[100px] h-[80px] my-auto border-[1px] border-[#fff]' >
                                                 <img className='w-full h-full object-cover' src={i.images[0]} alt={i.title} />
@@ -177,9 +64,9 @@ function Carlist() {
 
 
                         <div className='year w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('search')} >Year</button>
+                            <button onClick={() => isClicked('search')} className='w-full text-left' >Year</button>
                             {clicked.search &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="year" id='yearone' value={2020} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="yearone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.yearone ? checkstyle : null}></div> 2020</label>
@@ -204,9 +91,9 @@ function Carlist() {
                         </div>
 
                         <div className='brand w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('brand')} >brand</button>
+                            <button onClick={() => isClicked('brand')} className='w-full text-left' >brand</button>
                             {clicked.brand &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="brand" id='brandone' value={'tata'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="brandone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.brandone ? checkstyle : null}></div> Tata</label>
@@ -231,15 +118,15 @@ function Carlist() {
                         </div>
 
                         <div className='Body-type w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('body')} >Body Type</button>
+                            <button onClick={() => isClicked('body')} className='w-full text-left'>Body Type</button>
                             {clicked.body &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="body_type" id='bodyone' value={'sedan'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="bodyone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.bodyone ? checkstyle : null}></div> Sedan</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" className='hidden' name="body_type" id='bodytwo' value={'hatchback'} onChange={(e) => ischecked(e)} />
+                                        <input type="checkbox" className='hidden' name="body_type" id='bodytwo' value={'hatch-back'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="bodytwo"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.bodytwo ? checkstyle : null}></div> Hatchback</label>
                                     </div>
                                     <div>
@@ -258,9 +145,9 @@ function Carlist() {
                         </div>
 
                         <div className='transmission w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('transmission')} >Transmission Type</button>
+                            <button onClick={() => isClicked('transmission')} className='w-full text-left'>Transmission Type</button>
                             {clicked.transmission &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="transmission" id='transmissionone' value={'automatic'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="transmissionone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.transmissionone ? checkstyle : null}></div> Automatic</label>
@@ -273,9 +160,9 @@ function Carlist() {
                         </div>
 
                         <div className='fuel-type w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('fuel')} >Fuel Type</button>
+                            <button onClick={() => isClicked('fuel')} className='w-full text-left'>Fuel Type</button>
                             {clicked.fuel &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="fuel_type" id='fuelone' value={'petrol'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="fuelone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.fuelone ? checkstyle : null}></div> Petrol</label>
@@ -296,9 +183,9 @@ function Carlist() {
                         </div>
 
                         <div className='drivetrain w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('drivetrain')} >Drivetrain</button>
+                            <button onClick={() => isClicked('drivetrain')} className='w-full text-left'>Drivetrain</button>
                             {clicked.drivetrain &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="drivetrain" id='drivetrainone' value={'front-wheel'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="drivetrainone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.drivetrainone ? checkstyle : null}></div> Front-wheel</label>
@@ -315,9 +202,9 @@ function Carlist() {
                         </div>
 
                         <div className='seats w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('seats')} >Passenger Capaccity</button>
+                            <button onClick={() => isClicked('seats')} className='w-full text-left'>Passenger Capaccity</button>
                             {clicked.seats &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="seats" id='seatsone' value={'5'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="seatsone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.seatsone ? checkstyle : null}></div> 5</label>
@@ -338,9 +225,9 @@ function Carlist() {
                         </div>
 
                         <div className='color w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
-                            <button onClick={() => isClicked('color')} >Exterior Color</button>
+                            <button onClick={() => isClicked('color')} className='w-full text-left'>Exterior Color</button>
                             {clicked.color &&
-                                <div className='dropdown px-6 py-2 grid grid-cols-1 gap-y-2'>
+                                <div className='dropdown  py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
                                     <div>
                                         <input type="checkbox" className='hidden' name="color" id='colorone' value={'red'} onChange={(e) => ischecked(e)} />
                                         <label htmlFor="colorone"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.colorone ? checkstyle : null}></div> Red</label>

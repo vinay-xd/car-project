@@ -10,7 +10,7 @@ import { useData } from '../context/userContex.jsx';
 
 function Detailpage() {
     const { carList } = useCarData()
-    const { token } = useData()
+    const { token, userData } = useData()
     const { id } = useParams()
     const navigate = useNavigate()
     const [thumbnail, setthumbnail] = useState(0)
@@ -33,7 +33,6 @@ function Detailpage() {
     console.log(contact);
 
     const singlecar = carList.find(item => item._id === id)
-
 
     const calculateEMI = (principal, rate, tenure) => {
         rate = rate / (12 * 100); // one month interest

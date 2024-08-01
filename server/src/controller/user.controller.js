@@ -163,4 +163,15 @@ const userContact = async (req, res) => {
     }
 }
 
-export { userSignup, userLogin, userConfirm, userForgot, userReset, userContact }
+const getUserData = async(req, res) => {
+    console.log('getdata');
+    User.find()
+    .then((user) => {
+        res.json({user})
+    })
+    .catch((err) =>  {
+        console.log(err);
+    })
+} 
+
+export { userSignup, userLogin, userConfirm, userForgot, userReset, userContact, getUserData }

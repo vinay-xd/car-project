@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa";
 import { useCarData } from '../context/carContext';
@@ -11,14 +11,19 @@ import { useData } from '../context/userContex';
 import axios from 'axios';
 
 function Admin() {
-  const { carList, setediting, editingfunction, fetchCarData } = useCarData()
-  const {token} = useData()
+  const { carList, setediting, editingfunction, fetchCarData, handleSortChange, filterdata } = useCarData()
+  const { token, userData, fetchuserData } = useData()
   const [show, setshow] = useState()
+  const [showuser, setshowUser] = useState(false)
+  const [query, setquery] = useState({})
   const navigate = useNavigate()
-
 
   const showdelete = (item) => {
     setshow(item)
+  }
+
+  const toggleuser = () => {
+    setshowUser(!showuser)
   }
 
   const deletecar = async (id) => {
@@ -32,25 +37,31 @@ function Admin() {
         setshow()
         fetchCarData()
       } catch (error) {
-          console.log(error);
+        console.log(error);
       }
     }
   }
 
+  useEffect(() => {
+    fetchuserData()
+  }, [])
 
-  
-  
+
+
+
   return (
     <>
       <section>
         <div className='main w-[1146px] mx-auto my-[80px]'>
+
           <div className='upperCon flex justify-between '>
-            <p className='text-[30px] font-[700]'>{carList.length} Results</p>
+            <p className='text-[30px] font-[700]'>{showuser ? userData.length : carList.length} Results</p>
+            <button className='mr-auto ml-6' onClick={toggleuser}>{showuser ? 'Cars Data' : 'Users Data'}</button>
             <div className='flex justify-evenly w-[400px]'>
-              <select className='bg-[#152836] text-[14px] font-[600] px-4 py-2 w-[236px] rounded' name="sort_by" id="sort_by">
-                <option value="" defaultChecked> sort by </option>
-                <option value="ascending">ascending</option>
-                <option value="descending">descending</option>
+              <select className='bg-[#152836] text-[14px] font-[600] px-4 py-2 w-[236px] rounded' name="sort_by" id="sort_by" onChange={handleSortChange}>
+                <option value=""> sort by </option>
+                <option value="asc">ascending</option>
+                <option value="desc">descending</option>
                 <option value="high">price high to low</option>
                 <option value="low">price low to high</option>
               </select>
@@ -58,10 +69,10 @@ function Admin() {
             </div>
           </div>
 
-          <div className='content relative'>
+          {!showuser ? <div className='content'>
             <div className='flex justify-between flex-wrap my-[80px]'>
               {
-                carList.map(i => (
+                filterdata && filterdata.map(i => (
                   <Admincard
                     id={i._id}
                     title={i.title}
@@ -100,14 +111,67 @@ function Admin() {
                     </div>
                   </div>
                   <div className='btnCon flex justify-around'>
-                    <button className='bg-[#007cc7] px-4 py-2 rounded-[10px]' onClick={()=> deletecar(show._id)}>Delete <span className='inline-block text-[20px] align-text-bottom'><RiDeleteBin6Line /></span></button>
+                    <button className='bg-[#007cc7] px-4 py-2 rounded-[10px]' onClick={() => deletecar(show._id)}>Delete <span className='inline-block text-[20px] align-text-bottom'><RiDeleteBin6Line /></span></button>
                     <button className='px-4 py-2 shadow-md rounded-[10px] text-[#000]' onClick={() => setshow()}> Cancle</button>
                   </div>
                 </div>
 
               </>
             }
-          </div>
+          </div> :
+
+            <div className='usecontent'>
+              <div className='userdata flex flex-wrap justify-between px-10 my-[80px] w-[1146px]'>
+                {
+                  userData.map(i => (
+                    <div className='relative w-[500px] grid grid-cols-2 font-[600] p-4 border-[2px] border-[#12232e] rounded bg-[#0b0c10] my-4'>
+                      <div>
+                        <p>Username: </p>
+                        <p>Email: </p>
+                        <p>Role: </p>
+                        <p>Verified: </p>
+                        <p>Query:</p>
+                      </div>
+
+                      <div className='text-[#a0a0a0] text-right'>
+                        <p>{i.username}</p>
+                        <p>{i.email}</p>
+                        <p>{i.role}</p>
+                        <p>{i.verified ? 'true' : 'false'}</p>
+                        <button onClick={() => setquery(prevState => ({ ...prevState, [i._id]: !prevState[i._id] }))}>{query[i._id] ? 'Hide Query' : 'Show Query'}</button>
+                      </div>
+                      {query[i._id] && <p className='text-center w-[470px]'>
+                        {i.query.length > 0 ? i.query.map(q =>
+                          <div className='dropdown mt-5  w-full text-left grid grid-cols-2'>
+                            <div className='text-[#a0a0a0]'>
+                              <p>Name:</p>
+                              <p>Email:</p>
+                              <p>{q.phone && 'Phone:'}</p>
+                              <p>Car:</p>
+                              <p>Subject:</p>
+                              <p>Message:</p>
+                            </div>
+                            <div className='text-[#a0a0a0] text-right' >
+                              <p>{q.name}</p>
+                              <p>{q.email}</p>
+                              <p>{q.phone}</p>
+                              <p>{q.carname}</p>
+                              <p>{q.subject}</p>
+                              <p>{q.message}</p>
+                            </div>
+                          </div>
+                        ) : <p>no query</p>}
+                      </p>}
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          }
+
+
+
+
         </div>
       </section>
 
