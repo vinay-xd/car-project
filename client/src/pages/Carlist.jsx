@@ -12,12 +12,12 @@ import Carcard from '../component/cards/carcard';
 
 
 function Carlist() {
-    const { search, setsearch, searchCarData, onSliderChange, isClicked, ischecked, handleSortChange, sortData, clicked, pricerange, checked, filterdata, checkstyle } = useCarData()
+    const { search, setsearch, searchCarData, onSliderChange, isClicked, ischecked, handleSortChange, sortData, clicked, pricerange, checked, filterdata, checkstyle, list } = useCarData()
     
 
     return (
         <>
-            <section className='text-[18px]'>
+            <section className='text-[18px]' ref={list}>
                 <div className='topnavCOn  bg-[#182e3bcc]'>
                     <div className=' w-[1192px] h-[60px] mx-auto flex items-center justify-between'>
                         <div className='navigation flex'>

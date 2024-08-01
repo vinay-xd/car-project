@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 
@@ -136,7 +136,7 @@ export function Carprovider({ children }) {
             (filters.seats.length === 0 || filters.seats.includes(parseInt(item.seats))) &&
             (filters.transmission.length === 0 || filters.transmission.includes(item.transmission.toLowerCase())) &&
             (filters.model.length === 0 || filters.model.includes(item.model.toLowerCase())) &&
-            (filters.price.minPrice <= item.price && filters.price.maxPrice >= item.price )
+            (filters.price.minPrice <= item.price && filters.price.maxPrice >= item.price)
         ))
 
         const array = sortData(filtered, sortOrder.key, sortOrder.order)
@@ -198,9 +198,34 @@ export function Carprovider({ children }) {
         borderColor: '#007cc7'
     }
 
+    const [listOpen, setListOpen] = useState()
+    const list = useRef(null);
+    const trigger = useRef(null);
+
+    // close the sidebar when clicked outside using the useref hook
+    useEffect(() => {
+        const clickHandler = ({ target } = MouseEvent) => {
+            if (!list.current || !trigger.current) return;
+            if (!listOpen || list.current.contains(target) || trigger.current.contains(target))
+                return setListOpen(false);
+        };
+        document.addEventListener('click', clickHandler);
+        return () => document.removeEventListener('click', clickHandler);
+    });
+
+    // close if the esc key is pressed
+    useEffect(() => {
+        const keyHandler = ({ keyCode } = KeyboardEvent) => {
+            if (!listOpen || keyCode !== 27) return;
+            setSidebarOpen(false);
+        };
+        document.addEventListener('keydown', keyHandler);
+        return () => document.removeEventListener('keydown', keyHandler);
+    });
+
     return (
         <>
-            <carContext.Provider value={{ carList, search, setsearch, searchCarData, setcarList, editing, setediting, fetchCarData, editingfunction, carData, setcarData, files, setfiles, onSliderChange, clicked, isClicked, ischecked, handleSortChange, sortData, pricerange, checked, filterdata, checkstyle }}>
+            <carContext.Provider value={{ carList, search, setsearch, searchCarData, setcarList, editing, setediting, fetchCarData, editingfunction, carData, setcarData, files, setfiles, onSliderChange, clicked, isClicked, ischecked, handleSortChange, sortData, pricerange, checked, filterdata, checkstyle, listOpen, setListOpen, list, trigger }}>
                 {children}
             </carContext.Provider>
         </>

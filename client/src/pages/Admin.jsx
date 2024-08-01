@@ -11,7 +11,7 @@ import { useData } from '../context/userContex';
 import axios from 'axios';
 
 function Admin() {
-  const { carList, setediting, editingfunction, fetchCarData, handleSortChange, filterdata } = useCarData()
+  const { carList, setediting, editingfunction, fetchCarData, handleSortChange, filterdata, list } = useCarData()
   const { token, userData, fetchuserData } = useData()
   const [show, setshow] = useState()
   const [showuser, setshowUser] = useState(false)
@@ -51,7 +51,7 @@ function Admin() {
 
   return (
     <>
-      <section>
+      <section ref={list}>
         <div className='main w-[1146px] mx-auto my-[80px]'>
 
           <div className='upperCon flex justify-between '>

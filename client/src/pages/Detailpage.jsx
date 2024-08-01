@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useData } from '../context/userContex.jsx';
 
 function Detailpage() {
-    const { carList } = useCarData()
+    const { carList, list } = useCarData()
     const { token, userData } = useData()
     const { id } = useParams()
     const navigate = useNavigate()
@@ -117,7 +117,7 @@ function Detailpage() {
 
     return (
         <>
-            <section className='text-[18px]'>
+            <section className='text-[18px]' ref={list}>
                 <div className='topnavCOn py-3 w-[1192px] mx-auto flex justify-between'>
                     <div className='navigation flex'>
                         <Link to={'/'}><p className=' font-[600]  text-[#bdc3c7] after:content-[">"] after:ml-1 mr-2' >Homepage </p></Link>

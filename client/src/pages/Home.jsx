@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Home() {
-  const { search, setsearch, pricerange, onSliderChange, clicked, isClicked, checked, ischecked, checkstyle } = useCarData()
+  const { search, setsearch, pricerange, onSliderChange, clicked, isClicked, checked, ischecked, checkstyle, list } = useCarData()
 const navigate = useNavigate()
 const handleSearch = (e) => {
   ischecked(e)
@@ -21,7 +21,7 @@ const handleSearch = (e) => {
 
   return (
     <>
-      <section className='mb-[200px]'>
+      <section className='mb-[200px]' ref={list}>
         <div className='imgCon w-[100%] h-[823px] relative'>
 
           <div className='top-bar bg-[#182e3bcc] w-[100%] absolute'>
