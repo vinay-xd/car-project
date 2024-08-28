@@ -13,13 +13,20 @@ import Carcard from '../component/cards/carcard';
 
 function Carlist() {
     const { search, setsearch, searchCarData, onSliderChange, isClicked, ischecked, handleSortChange, sortData, clicked, pricerange, checked, filterdata, checkstyle, list } = useCarData()
+    const [filterbox, setfilterbox] = useState(false)
+
+    const openfilter = () => {
+        setfilterbox(!filterbox)
+    }
     
+    console.log(filterbox);
+
 
     return (
         <>
             <section className='text-[18px]' ref={list}>
                 <div className='topnavCOn  bg-[#182e3bcc]'>
-                    <div className=' w-[1192px] h-[60px] mx-auto flex items-center justify-between'>
+                    <div className='py-3 max-w-[1280px] w-[90%] h-[60px] mx-auto flex items-center justify-between'>
                         <div className='navigation flex'>
                             <Link to={'/'}><p className=' font-[600]  text-[#bdc3c7] after:content-[">"] after:ml-1 mr-2' >Homepage </p></Link>
                             <p className='font-[600]  text-[#d7d7d7] mr-2'>Car list</p>
@@ -30,13 +37,13 @@ function Carlist() {
                     </div>
                 </div>
 
-                <div className='main flex justify-between w-[1192px] mx-auto mt-10'>
-                    <div className='filter text-left w-[391px] p-4 bg-[#071620]'>
+                <div className='main relative grid grid-cols-10 justify-between max-w-[1280px] w-[90%] mx-auto mt-10'>
+                    <div className={`filter lg:block absolute top-10 lg:relative lg:top-0 col-span-3 text-left p-4 bg-[#071620] ${filterbox ? 'block' : 'hidden'}`}>
                         <div className='border-b-2 pb-3'>
                             <h3 className='text-[20px] font-[500] px-4'>Filter</h3>
                         </div>
 
-                        <div className='search relative w-[359px] rounded mt-6 overflow-hidden '>
+                        <div className='search relative w-[99%] mx-auto rounded mt-6 overflow-hidden '>
                             <span className=' absolute text-[25px] z-10 top-[50%] translate-y-[-50%] left-6 font-[600]'><FiSearch /></span>
                             <input className='text-[18px] w-full bg-[#152836] px-[56px] py-3 text-[#a9a9a9]' type="text" name="search" value={search} onChange={(e) => setsearch(e.target.value)} placeholder='Search' />
                         </div>
@@ -45,16 +52,16 @@ function Carlist() {
                             <div className='search-list  rounded overflow-hidden my-3'>
                                 {
                                     searchCarData.map(i =>
-                                        <div className='flex justify-between w-[350px] mx-auto mb-2 pt-2 px-3 bg-[#152836] '>
-                                            <div className='w-[100px] h-[80px] my-auto border-[1px] border-[#fff]' >
-                                                <img className='w-full h-full object-cover' src={i.images[0]} alt={i.title} />
+                                        <div className='grid grid-cols-6 gap-4 justify-between w-[99%] mx-auto mb-2 pt-2 px-3 bg-[#152836] '>
+                                            <div className=' col-span-2 h-[80px] my-auto ' >
+                                                <img className='w-full h-[90%] object-cover border-[1px] border-[#fff]' src={i.images[0]} alt={i.title} />
                                             </div>
-                                            <div className='w-[200px] text-[14px] grid grid-cols-2'>
+                                            <div className='col-span-4 text-[14px] grid grid-cols-2'>
                                                 <Link className='col-span-2' to={`/cardetails/${i._id}`}><p>{i.title}</p></Link>
                                                 <p className='text-[#007cc7]'>${i.price}</p>
-                                                <p>{i.year}</p>
-                                                <p>{i.brand}</p>
-                                                <p >{i.model}</p>
+                                                <p>Year: {i.year}</p>
+                                                {/* <p>{i.brand}</p>
+                                                <p >{i.model}</p> */}
                                             </div>
                                         </div>
                                     )
@@ -63,7 +70,7 @@ function Carlist() {
                         ) : null}
 
 
-                        <div className='year w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='year w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('search')} className='w-full text-left' >Year</button>
                             {clicked.search &&
                                 <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -90,7 +97,7 @@ function Carlist() {
                                 </div>}
                         </div>
 
-                        <div className='brand w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='brand w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('brand')} className='w-full text-left' >brand</button>
                             {clicked.brand &&
                                 <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -117,7 +124,7 @@ function Carlist() {
                                 </div>}
                         </div>
 
-                        <div className='Body-type w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='Body-type w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('body')} className='w-full text-left'>Body Type</button>
                             {clicked.body &&
                                 <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -144,7 +151,7 @@ function Carlist() {
                                 </div>}
                         </div>
 
-                        <div className='transmission w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='transmission w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('transmission')} className='w-full text-left'>Transmission Type</button>
                             {clicked.transmission &&
                                 <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -159,7 +166,7 @@ function Carlist() {
                                 </div>}
                         </div>
 
-                        <div className='fuel-type w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='fuel-type w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('fuel')} className='w-full text-left'>Fuel Type</button>
                             {clicked.fuel &&
                                 <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -182,7 +189,7 @@ function Carlist() {
                                 </div>}
                         </div>
 
-                        <div className='drivetrain w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='drivetrain w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('drivetrain')} className='w-full text-left'>Drivetrain</button>
                             {clicked.drivetrain &&
                                 <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -201,7 +208,7 @@ function Carlist() {
                                 </div>}
                         </div>
 
-                        <div className='seats w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='seats w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('seats')} className='w-full text-left'>Passenger Capaccity</button>
                             {clicked.seats &&
                                 <div className='dropdown py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -224,7 +231,7 @@ function Carlist() {
                                 </div>}
                         </div>
 
-                        <div className='color w-[359px] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
+                        <div className='color w-[99%] mt-4 text-[14px] bg-[#152836] px-4 py-3'>
                             <button onClick={() => isClicked('color')} className='w-full text-left'>Exterior Color</button>
                             {clicked.color &&
                                 <div className='dropdown  py-2 grid grid-cols-1 gap-y-2 mt-3 border-t-2 border-[#fff]'>
@@ -254,7 +261,7 @@ function Carlist() {
                         <div className='priceRange py-5'>
                             <h3 className='font-[600]'>Price Range</h3>
                             <p className='text-[18px] font-[700] text-[#007cc7]'>${pricerange[0]} - ${pricerange[1]}</p>
-                            <div className=' w-[359px] h-2 bg-[#152836] my-7'>
+                            <div className=' w-[99%] h-2 bg-[#152836] my-7'>
                                 <ReactSlider
                                     className="horizontal-slider pt-3 "
                                     thumbClassName="thumb"
@@ -267,7 +274,7 @@ function Carlist() {
                                 />
                             </div>
                             <div className='mt-10'>
-                                <input type="checkbox" className='hidden' name="price" id='price'  onChange={ischecked} />
+                                <input type="checkbox" className='hidden' name="price" id='price' onChange={ischecked} />
                                 <label htmlFor="price"> <div className='inline-block border-2 border-[#fff] w-3 h-3 mr-2' style={checked.price ? checkstyle : null}></div> Price</label>
                             </div>
                         </div>
@@ -277,24 +284,27 @@ function Carlist() {
 
                     </div>
 
-                    <div className='carContent'>
-                        <div className='main w-[761px] mx-auto'>
+                    <div className='carContent col-span-10 lg:col-span-7  px-5'>
+                        <div className='main mx-auto'>
                             <div className='upperCon flex justify-between '>
-                                <p className='text-[30px] font-[700]'>{filterdata.length} result</p>
-                                <div className='flex justify-evenly w-[400px]'>
-                                    <select className='bg-[#152836] text-[14px] font-[600] px-4 w-[236px] rounded' onChange={handleSortChange} name="sort_by" id="sort_by">
+                                <div className='flex justify-between w-[200px] lg:w-[320px] mr-4'>
+                                    <div className='bg-[#152836] px-5 py-1 rounded lg:hidden' onClick={() => openfilter()}>filter</div>
+                                    <p className='text-[20px] lg:text-[30px] font-[700]'>{filterdata.length} result</p>
+                                </div>
+                                <div className='flex justify-evenly w-[180px] lg:w-[320px]'>
+                                    <select className='bg-[#152836] text-[14px] font-[600] px-4 w-[100%] rounded' onChange={handleSortChange} name="sort_by" id="sort_by">
                                         <option value="" > sort by </option>
                                         <option value='asc'>Ascending</option>
                                         <option value="desc">Descending</option>
                                         <option value="high">Price high to low</option>
                                         <option value="low">Price low to high</option>
                                     </select>
-                                    <div className='text-[36px] flex justify-between w-[90px] pt-1' ><span><FaListUl /></span><span><IoGrid /></span></div>
+                                    {/* <div className='text-[24px] items-center md:text-[30px] flex justify-between w-[60px] md:w-[80px] pt-1' ><span><FaListUl /></span><span><IoGrid /></span></div> */}
                                 </div>
                             </div>
 
-                            <div className='content relative'>
-                                <div className='flex justify-between flex-wrap my-[80px]'>
+                            <div className='content'>
+                                <div className='grid grid-cols-1 md:grid-cols-2 gap-4 flex-wrap my-[40px]'>
                                     {
                                         filterdata && filterdata.map(i => (
                                             <Carcard

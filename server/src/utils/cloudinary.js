@@ -1,9 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary'
-import path, { resolve } from 'path';
 import crypto from 'crypto'
 import fs from 'fs'
 
-
+//for not uploading same file again
 const fileHashFun = (filePath) => {
     return new Promise((resolve, reject) => {
         const hash = crypto.createHash('md5');
