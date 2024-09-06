@@ -27,7 +27,7 @@ export function Contextprovider({ children }) {
 
     const fetchuserData = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/get-userdata', {
+            const response = await axios.get('https://car-project-server-sigma.vercel.app/get-userdata', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
