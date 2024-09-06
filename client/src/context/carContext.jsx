@@ -151,7 +151,7 @@ export function Carprovider({ children }) {
     // console.log(userSearchCarData);
     const fetchCarData = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/get-cardata')
+            const response = await axios.get('https://car-project-server-sigma.vercel.app/get-cardata')
             // console.log(response.data.product);
             setcarList(response.data.cardata)
         } catch (error) {
