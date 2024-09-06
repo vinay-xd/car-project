@@ -30,7 +30,7 @@ function Detailpage() {
         message: '',
         carname: ''
     })
-    console.log(contact);
+    // console.log(contact);
 
     const singlecar = carList.find(item => item._id === id)
 

@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken'
 import { User } from '../model/user.model.js'
 
 const useAuth = (req, res, next) => {
-console.log('authmiddleware..........................');
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) { return res.status(400).json({ message: 'unauthorize user' }) }

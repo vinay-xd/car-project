@@ -18,86 +18,88 @@ const carSchema = new mongoose.Schema(
             type: String,
             require: true
         },
-        images:[{
+        images: [{
             type: String,
             require: true
         }],
-        brand:{
-            type: String,
-            require: true
-        }, 
-        model:{
-            type: String,
-            require: true
+        brands: {
+            brand: {
+                type: String,
+                require: true,
+            },
+            models: [{
+                type: String,
+                require: true
+            }]
         },
-        condition:{
-            type: String,
-            require: true
-        },
-        year:{
+        condition: {
             type: String,
             require: true
         },
-        body_type:{
+        year: {
             type: String,
             require: true
         },
-        seats:{
+        body_type: {
             type: String,
             require: true
         },
-        color:{
+        seats: {
             type: String,
             require: true
         },
-        fuel_type:{
+        color: {
             type: String,
             require: true
         },
-        mileage:{
-            type: String,
-        },
-        transmission:{
+        fuel_type: {
             type: String,
             require: true
         },
-        drivetrain:{
+        mileage: {
+            type: String,
+        },
+        transmission: {
             type: String,
             require: true
         },
-        power:{
+        drivetrain: {
             type: String,
             require: true
         },
-        battery_capacity:{
-            type: String,
-        },
-        charge_port:{
-            type: String,
-        },
-        charge_speed:{
-            type: String,
-        },
-        charge_time:{
-            type: String,
-        },
-        length:{
+        power: {
             type: String,
             require: true
         },
-        width:{
+        battery_capacity: {
+            type: String,
+        },
+        charge_port: {
+            type: String,
+        },
+        charge_speed: {
+            type: String,
+        },
+        charge_time: {
+            type: String,
+        },
+        length: {
             type: String,
             require: true
         },
-        height:{
+        width: {
             type: String,
             require: true
         },
-        cargo_volume:{
+        height: {
             type: String,
             require: true
         },
-        
-    }, {timestamps: true})
+        cargo_volume: {
+            type: String,
+            require: true
+        },
+
+    }, { timestamps: true })
 
 export const Car = mongoose.model('Car', carSchema)

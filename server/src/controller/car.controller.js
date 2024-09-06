@@ -15,13 +15,22 @@ const addCar = async (req, res) => {
 
             if(result.some(url => url === null)) {return res.status(500).json({message: 'some file failed to upload', result})}
 
-            const car = new Car ({ title, description ,price, features, brand, model, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume, images: result })
+            const existingBrand = await Car.findOne({brand});
+            let brandData;
+            if(existingBrand) {
+                existingBrand.brands.models.push(model);
+                brandData = existingBrand.brands
+            }else {
+                brandData = {brand , models : [model]}
+            }
+            console.log('brandData....................', brandData);
+            
+            const car = new Car ({ title, description ,price, features, brands : brandData, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume, images: result })
 
             console.log('car..................', car);
             
             await car.save()
             res.status(200).json({ car })
-            // console.log(product);
         }
     } catch (error) {
         console.log('error in add cardata', error);
@@ -58,18 +67,36 @@ const updateCar = async (req, res) => {
     try {
         const existUser = await User.findById(req.decoded.userId)
         if (existUser.role === 'admin') {
-            const uploadfile = req.files.map(file =>  cloudfiles(file.path));
-            const result = await Promise.all(uploadfile)
+            const existingBrand = await Car.findOne({brand});
+            let imageUrl = existingBrand.images;
 
-            if(result.some(url => url === null)) {return res.status(500).json({message: 'some file failed to upload', result})}
+            if(req.files && req.files.lemgth > 0) {
+                const uploadfile = req.files.map(file =>  cloudfiles(file.path));
+                const result = await Promise.all(uploadfile)
+                if(result.some(url => url === null)) {return res.status(500).json({message: 'some file failed to upload', result})}
 
-            const data = { title, description ,price, features, brand, model, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume }
+                imageUrl = result;
+            }
+            
+            let brandData;
+            if(existingBrand) {
+                if (!existingBrand.brands.models.includes(model)) {
+                    existingBrand.brands.models.push(model);
+                    brandData = existingBrand.brands
+                }else{
+                    brandData = existingBrand.brands
+                }
+            }else {
+                brandData = {brand , models : [model]}
+            }
+
+            const data = { title, description ,price, features, brand : brandData, condition, year, body_type, seats, color, fuel_type, mileage, transmission, drivetrain, power, battery_capacity, charge_port, charge_speed, charge_time, length, width, height, cargo_volume }
             if (req.files) {
-                data.images = result
+                data.images = imageUrl;
             }
             await Car.findByIdAndUpdate(req.params.id, data, { new: true });
             res.status(200).json({ message: 'Car data updated' })
-            // console.log('data...............', data);
+            console.log('data...............', data);
         } else {
             res.status(400).json({ message: 'user is not admin' })
         }

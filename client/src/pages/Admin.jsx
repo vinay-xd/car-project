@@ -74,6 +74,7 @@ function Admin() {
                                 {
                                     filterdata && filterdata.map(i => (
                                         <Admincard
+                                            key={i._id}
                                             id={i._id}
                                             title={i.title}
                                             price={i.price}

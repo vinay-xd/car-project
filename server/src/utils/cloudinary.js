@@ -37,10 +37,10 @@ export const cloudfiles = async (localfilepath) => {
             const searchExpression = `context.hash:${fileHash}`
             const existImage = await cloudinary.search.expression(searchExpression).execute();
 
-            console.log('existImage.....', existImage);
+            // console.log('existImage.....', existImage);
 
             if (existImage.resources.length > 0) {
-                console.log('file alredy exist');
+                // console.log('file alredy exist');
                 return existImage.resources[0].secure_url;
             }
 
