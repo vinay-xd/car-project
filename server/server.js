@@ -8,6 +8,7 @@ const corsOptions = {
   origin: 'https://car-project-client.vercel.app', // replace with your frontend's production URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // methods you allow
   credentials: true // Enable Access-Control-Allow-Credentials if needed
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 const app = express()
