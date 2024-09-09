@@ -58,7 +58,7 @@ function AddCarData() {
     const handleSubmit = async () => {
         if(token) {
             try {
-                const response = await axios.post('https://car-project-server-sigma.vercel.app/upload-cardata', formData, {
+                const response = await axios.post('https://car-project-server.onrender.com/upload-cardata', formData, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -79,7 +79,7 @@ function AddCarData() {
     const handleUpdata = async () => {
         if(token){
           try {
-            const response = await axios.put(`https://car-project-server-sigma.vercel.app/update-cardata/${editing}`, formData, {
+            const response = await axios.put(`https://car-project-server.onrender.com/update-cardata/${editing}`, formData, {
               headers: {
                 Authorization: `Bearer ${token}`
               }
