@@ -7,11 +7,7 @@ import router from './src/router/router.js'
 
 
 const app = express()
-app.use(cors({
-  origin: 'https://car-project-client.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials : true,
-}));
+app.use(cors());
 dotenv.config()
 app.use(express.json())
 app.use(express.static('public'))
