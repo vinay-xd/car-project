@@ -70,7 +70,7 @@ function Detailpage() {
         if (token) {
             setContact({ ...contact, carname: singlecar.title })
             try {
-                const response = await axios.post('https://car-project-server-sigma.vercel.app/contact-dealer', contact, {
+                const response = await axios.post('https://car-project-server.onrender.com/contact-dealer', contact, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
