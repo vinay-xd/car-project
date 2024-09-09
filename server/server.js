@@ -12,8 +12,8 @@ const corsOptions = {
 };
 
 const app = express()
-dotenv.config()
 app.use(cors(corsOptions))
+dotenv.config()
 app.use(express.json())
 app.use(express.static('public'))
 app.use(router)
