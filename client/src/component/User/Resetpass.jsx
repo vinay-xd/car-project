@@ -22,7 +22,7 @@ function Resetpass() {
 
     const handlepassword = async () => {
         try {
-            const response = await axios.post(`https://car-project-server-sigma.vercel.app/reset-password/${token}`, {password, confirmpass})
+            const response = await axios.post(`https://car-project-server.onrender.com/reset-password/${token}`, {password, confirmpass})
             console.log(response);
             navigate('/login')
         } catch (error) {
