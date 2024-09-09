@@ -8,7 +8,7 @@ import router from './src/router/router.js'
 
 const app = express()
 app.use(cors({
-    origin: * ,
+    origin: 'https://car-project-server-sigma.vercel.app' ,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 dotenv.config()
