@@ -8,7 +8,7 @@ import router from './src/router/router.js'
 
 const app = express()
 app.use(cors({
-    origin: "https://car-project-client.vercel.app"
+    origin: "https://car-project-client.onrender.com/"
 }));
 dotenv.config()
 app.use(express.json())
