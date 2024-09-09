@@ -4,14 +4,12 @@ import dotenv from 'dotenv'
 import Mongodb from './src/mongo/mongoose.js'
 import router from './src/router/router.js'
 
-const corsOptions = {
-  origin: 'https://car-project-client.vercel.app', // replace with your frontend's production URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // methods you allow
-  credentials: true // Enable Access-Control-Allow-Credentials if needed
-};
+
 
 const app = express()
-app.use(cors(corsOptions))
+app.use(cors({
+    origin: "https://car-project-client.onrender.com"
+}));
 dotenv.config()
 app.use(express.json())
 app.use(express.static('public'))

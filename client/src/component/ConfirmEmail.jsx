@@ -9,7 +9,7 @@ function ConfirmEmail() {
     useEffect(() => {
         const confirmemail = async () => {
             try {
-                const response = await axios.get(`https://car-project-server-sigma.vercel.app/confirmation/${token}`)
+                const response = await axios.get(`https://car-project-server.onrender.com/confirmation/${token}`)
                 setmessage(response.data.message)
             } catch (error) {
                 setmessage('Error confirming email. Try again later.')
