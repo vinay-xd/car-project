@@ -23,7 +23,7 @@ function Signup() {
   const handelSignup = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('https://car-project-server-sigma.vercel.app/user-signup', userdetails)
+      const response = await axios.post('https://car-project-server.onrender.com/user-signup', userdetails)
       // localdata(response.data.token, response.data.role)
       setmessage(response.data.message)
       toast.success('signup successful check mail for confirmation', {
