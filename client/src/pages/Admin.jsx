@@ -29,7 +29,7 @@ function Admin() {
     const deletecar = async (id) => {
         if (token) {
             try {
-                const response = await axios.delete(`https://car-project-server.onrender.com/delete-cardata/${id}`, {
+                const response = await axios.delete(`${import.meta.env.VITE_LOCALHOST_API}/delete-cardata/${id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
